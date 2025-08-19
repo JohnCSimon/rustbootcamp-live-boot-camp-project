@@ -16,7 +16,10 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn hello_handler() -> Html<&'static str> {
-    // TODO: Update this to a custom message!
-    Html("<h1>Hello, World!</h1>")
+async fn hello_handler() -> Html<String> {
+    // get the current time
+    let now = chrono::offset::Utc::now();
+    let formatted = now.format("%Y-%m-%d %H:%M:%S").to_string();
+    let html = format!("<h1>Hello, World! {}</h1>", formatted);
+    Html(html)
 }
