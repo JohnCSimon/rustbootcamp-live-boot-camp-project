@@ -1,4 +1,21 @@
-use crate::helpers::{get_random_email, TestApp};
+use crate::helpers::{TestApp, get_random_email};
+
+#[tokio::test]
+async fn should_return_201_if_valid_input() {
+    let body = serde_json::json!({
+        "email": get_random_email(),
+        "password": "password123",
+        "requires2FA": true
+    });
+    let app = TestApp::new().await;
+    let response = app.post_signup(&body).await;
+    assert_eq!(
+        response.status().as_u16(),
+        201,
+        "Failed for input: {:?}",
+        body
+    );
+}
 
 #[tokio::test]
 async fn should_return_422_if_malformed_input() {
