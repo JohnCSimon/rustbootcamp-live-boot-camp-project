@@ -5,7 +5,9 @@ use routes::{login, logout, signup, verify_2fa, verify_token};
 use tokio::net::TcpListener;
 use tower_http::services::{ServeDir, ServeFile};
 
+mod domain;
 mod routes;
+mod services;
 
 pub struct Application {
     server: Serve<TcpListener, Router, Router>,
