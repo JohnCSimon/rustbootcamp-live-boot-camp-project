@@ -43,6 +43,19 @@ impl HashmapUserStore {
             None => Err(UserStoreError::UserNotFound),
         }
     }
+
+    pub fn validate_user(&self, email: &str, password: &str) -> Result<(), UserStoreError> {
+        match self.users.get(email) {
+            Some(user) => {
+                if user.password == password {
+                    Ok(())
+                } else {
+                    Err(UserStoreError::InvalidCredentials)
+                }
+            }
+            None => Err(UserStoreError::UserNotFound),
+        }
+    }
 }
 // TODO: Implement a public method called `validate_user`, which takes an
 // immutable reference to self, an email string slice, and a password string slice
