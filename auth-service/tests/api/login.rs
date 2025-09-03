@@ -30,3 +30,20 @@ async fn should_return_400_if_invalid_input() {
 
     assert_eq!(response.status().as_u16(), 400);
 }
+
+#[tokio::test]
+async fn should_return_401_if_incorrect_credentials() {
+    // Call the log-in route with incorrect credentials and assert
+    // that a 401 HTTP status code is returned along with the appropriate error message.
+    let app = TestApp::new().await;
+    let login_body = serde_json::json!({
+        "email": "user@example.com",
+        "password": "wrongpassword"
+    });
+
+    let response = app.post_login(&login_body).await;
+
+    let responseCode = response.status().as_u16();
+
+    assert_eq!(responseCode, 401);
+}
