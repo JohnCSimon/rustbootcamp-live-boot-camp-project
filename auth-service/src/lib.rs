@@ -2,11 +2,11 @@ use std::error::Error;
 
 use app_state::AppState;
 use axum::{
+    Json, Router,
     http::StatusCode,
     response::{IntoResponse, Response},
     routing::post,
     serve::Serve,
-    Json, Router,
 };
 use domain::AuthAPIError;
 use routes::{login, logout, signup, verify_2fa, verify_token};
@@ -17,6 +17,7 @@ pub mod app_state;
 pub mod domain;
 pub mod routes;
 pub mod services;
+pub mod utils;
 
 pub struct Application {
     server: Serve<Router, Router>,
@@ -55,9 +56,10 @@ pub struct ErrorResponse {
 impl IntoResponse for AuthAPIError {
     fn into_response(self) -> Response {
         let (status, error_message) = match self {
-            AuthAPIError::IncorrectCredentials => {
-                (StatusCode::UNAUTHORIZED, "Incorrect credentials, totally legit, <insert witty remark>, <insert another witty remark>, <insert third witty remark>")
-            }
+            AuthAPIError::IncorrectCredentials => (
+                StatusCode::UNAUTHORIZED,
+                "Incorrect credentials, totally legit, <insert witty remark>, <insert another witty remark>, <insert third witty remark>",
+            ),
 
             AuthAPIError::UserAlreadyExists => (StatusCode::CONFLICT, "User already exists"),
             AuthAPIError::InvalidCredentials => (StatusCode::BAD_REQUEST, "Invalid credentials"),
