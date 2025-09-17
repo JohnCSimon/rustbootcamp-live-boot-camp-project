@@ -4,6 +4,12 @@ use std::env as std_env;
 
 lazy_static! {
     pub static ref JWT_SECRET: String = set_token();
+    pub static ref DATABASE_URL: String = set_db_url();
+}
+
+fn set_db_url() -> String {
+    dotenv().ok();
+    std_env::var(env::DATABASE_URL_ENV_VAR).expect("DATABASE_URL must be set.")
 }
 
 fn set_token() -> String {
@@ -17,6 +23,7 @@ fn set_token() -> String {
 
 pub mod env {
     pub const JWT_SECRET_ENV_VAR: &str = "JWT_SECRET";
+    pub const DATABASE_URL_ENV_VAR: &str = "DATABASE_URL";
 }
 
 pub const JWT_COOKIE_NAME: &str = "jwt";
