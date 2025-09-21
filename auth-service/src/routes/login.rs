@@ -49,7 +49,7 @@ async fn handle_2fa(
     Result<(StatusCode, Json<LoginResponse>), AuthAPIError>,
 ) {
     let login_attempt_id = LoginAttemptId::default();
-    let two_fa_code: TwoFACode = TwoFACode::default();
+    let two_fa_code = TwoFACode::default();
 
     if state
         .two_fa_code_store
